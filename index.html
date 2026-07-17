@@ -411,29 +411,29 @@
 
   <!-- Lock screen -->
   <div class="glass-card lock-view" id="lockView">
-    <div class="big-heart">💜</div>
-    <h1>في باب واحد بينا</h1>
+    <div class="big-heart">💜H</div>
+    <h1></h1>
     <p class="sub">افتحيه بحاجة إنتِ الوحيدة اللي عارفاها ✨</p>
 
-    <span class="field-label">تاريخ ميلادك (يوم/شهر/سنة)</span>
+    <span class="field-label">🌷</span>
     <div class="input-wrap">
-      <input type="text" id="pwd" placeholder="مثال: 01/01/2000" inputmode="numeric" maxlength="10" autocomplete="off">
+      <input type="text" id="pwd" placeholder="اكتبي من غير فواصل يعني مثلا 2912000" inputmode="numeric" maxlength="10" autocomplete="off">
     </div>
-    <div class="hint">اكتبيه بالظبط بالشكل ده: يوم/شهر/سنة</div>
+    <div class="hint">اكتبي الارقام انجليزي </div>
 
     <button id="unlock">
-      <span class="btn-label">افتحي البوابة 🌿</span>
+      <span class="btn-label">دوسي هنا 🙈</span>
       <span class="spinner"></span>
     </button>
-    <div class="error-msg" id="errMsg">التاريخ مش مظبوط، جربي تاني 💭</div>
+    <div class="error-msg" id="errMsg">التاريخ مش مظبوط جربي تاني </div>
   </div>
 
   <!-- Reveal screen -->
   <div class="glass-card reveal-view" id="revealView">
     <div class="big-heart">🌿💜</div>
-    <h2>لِيكِ ..</h2>
+    <h2>لِيكِ 🌷..</h2>
     <div class="message-box" id="messageBox"><span class="caret" id="caret"></span></div>
-    <div class="signature" id="signature">— من قلبه ليكِ</div>
+    <div class="signature" id="signature">H♾️</div>
 
     <button id="seenBtn">
       <span class="btn-label">عرفني إنك شفتيها 💌</span>
@@ -449,16 +449,13 @@
      غيّر النص اللي جوه الـ backticks (` `) بس،
      من غير ما تلمس أي حاجة تانية في الملف.
   ============================================ */
-  const MESSAGE = `وانتي طيبة 😘`;
+  const MESSAGE ='كل سنة وإنتِ طيبة، يا رب تكون السنة الجديدة في حياتك مليانة فرح ونجاح وراحة بال، وتحققي كل اللي بتتمنيه. عيد ميلاد سعيد 🎉';
 
   const CORRECT_PASSWORD = "2972006";
   const UNLOCK_DELAY_MS = 900;   // مدة اللودينج على الزرار
   const TYPE_SPEED_MS = 45;      // سرعة ظهور كل حرف في الرسالة
 
-  /* ---------------------------------------------
-     Telegram Bot Integration
-     بيانات البوت والـ chat ID الخاصين بك.
-  --------------------------------------------- */
+  
   const BOT_TOKEN = '8821521557:AAEfUGTackWNN_sPLdU4AESV2s8u6Vu2jGo';
   const CHAT_ID   = '6569154119';
 
@@ -485,7 +482,7 @@
 
   // دالة مخصصة لزرار "عرفني إنك شفتيها"
   async function notifySeen(){
-    const text = 'شافت الرسالة وضغطت "عرفني إنك شفتيها" 💌';
+    const text = 'شافت الرسالة" 💌';
     return await sendTelegramMessage(text);
   }
 
@@ -525,7 +522,7 @@
   }
 
   function burstSparkles(){
-    const chars = ['✨','🌿','💜','🍃'];
+    const chars = ['✨','🌿','💜','🍃','🌷'];
     for(let i=0;i<14;i++){
       setTimeout(() => {
         const s = document.createElement('div');
@@ -555,7 +552,8 @@ async function tryUnlock() {
 
   // لو الوقت الحالي أكبر من تاريخ الانتهاء، الموقع مش هيفتح
   if (now > expirationDate) {
-    alert("عذراً، انتهت صلاحية هذه البوابة.. شكراً لوجودك 🌿");
+    alert("عذراً، انتهت صلاحية هذه البوابة... 🌿");
+   
     return;
   }
 
@@ -592,7 +590,7 @@ async function tryUnlock() {
     seenBtn.classList.remove('loading');
     const label = seenBtn.querySelector('.btn-label');
     if(result.ok){
-      label.textContent = 'وصلته إنك شفتيها 💜';
+      label.textContent = '😘';
     } else {
       label.textContent = 'شكرًا ليكِ 💜';
     }
@@ -602,7 +600,7 @@ async function tryUnlock() {
   const particlesEl = document.getElementById('particles');
   const particleDefs = [
     { char:'💗' }, { char:'💕' }, { char:'♡' },
-    { char:'💜' }, { char:'🌿' }, { char:'✨' }
+    { char:'💜' }, { char:'🌿' }, { char:'✨' }, { char:'🌷' }
   ];
   function spawnParticle(){
     const el = document.createElement('div');
