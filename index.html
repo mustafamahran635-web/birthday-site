@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ليها بس 💌</title>
+<style>
+  :root{
+    --olive: #8a9a5e;
+    --olive-deep: #5c6b3e;
+    --violet: #9a5aa0;
+    --violet-deep: #5a2e63;
+    --rose: #d9748f;
+    --gold: #d4ab5a;
+
+    /* premium glass tokens */
+    --glass-bg: rgba(255,255,255,0.10);
+    --glass-bg-soft: rgba(255,255,255,0.16);
+    --glass-border: rgba(255,255,255,0.28);
+    --glass-blur: 20px;
+    --text-dark: #3a2540;
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; font-family:'Georgia','Amiri',serif; }
+
+  body{
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:linear-gradient(135deg, var(--olive) 0%, #6b7a48 28%, #8a4a7c 65%, var(--violet-deep) 100%);
+    background-size:300% 300%;
+    animation:gradientFlow 18s ease infinite;
+    overflow:hidden;
+    position:relative;
+  }
+
+  @keyframes gradientFlow{
+    0%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
+  }
+
+  /* ---------- floating particles ---------- */
+  .particles{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  .p{
+    position:absolute;
+    bottom:-10%;
+    animation:rise linear infinite;
+    filter:drop-shadow(0 0 4px rgba(255,255,255,0.25));
+    will-change:transform, opacity;
+  }
+  @keyframes rise{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:1; }
+    90%{ opacity:1; }
+    100%{ transform:translateY(-120vh) translateX(var(--drift,20px)) rotate(20deg); opacity:0; }
+  }
+
+  /* ---------- stage ---------- */
+  .stage{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:420px;
+    display:grid;
+    grid-template-areas:"stack";
+    place-items:center;
+  }
+  .stage > .glass-card{ grid-area:stack; width:100%; }
+
+  /* ---------- premium glassmorphism card ---------- */
+  .glass-card{
+    position:relative;
+    backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+    background:linear-gradient(155deg, var(--glass-bg-soft), var(--glass-bg));
+    border:1px solid var(--glass-border);
+    border-radius:28px;
+    padding:44px 30px 36px;
+    text-align:center;
+    box-shadow:
+      0 30px 70px rgba(30,15,40,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.35),
+      inset 0 0 40px rgba(255,255,255,0.03);
+    overflow:hidden;
+    transform-origin:center;
+  }
+
+  .glass-card::before{
+    content:"";
+    position:absolute;
+    top:-45%; right:-25%;
+    width:230px; height:230px;
+    background:radial-gradient(circle, rgba(217,116,143,0.32) 0%, transparent 70%);
+    animation:driftGlow 9s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .glass-card::after{
+    content:"";
+    position:absolute;
+    bottom:-35%; left:-20%;
+    width:210px; height:210px;
+    background:radial-gradient(circle, rgba(154,90,160,0.28) 0%, transparent 70%);
+    animation:driftGlow 11s ease-in-out infinite reverse;
+    pointer-events:none;
+  }
+  @keyframes driftGlow{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-14px,14px) scale(1.15); }
+  }
+
+  .lock-view{ animation:cardIn .7s var(--ease-out) both; }
+  @keyframes cardIn{
+    0%{ opacity:0; transform:scale(.9) translateY(14px); }
+    100%{ opacity:1; transform:scale(1) translateY(0); }
+  }
+
+  /* smooth scale-up fade crossfade between screens */
+  .lock-view, .reveal-view{
+    transition:opacity .6s var(--ease-in-out), transform .6s var(--ease-in-out), filter .6s var(--ease-in-out);
+  }
+  .lock-view.leaving{
+    opacity:0;
+    transform:scale(.92) translateY(-10px);
+    filter:blur(6px);
+    pointer-events:none;
+    position:absolute;
+    inset:0;
+  }
+  .reveal-view{
+    opacity:0;
+    transform:scale(.9) translateY(16px);
+    filter:blur(6px);
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+  }
+  .reveal-view.entering{
+    opacity:1;
+    transform:scale(1) translateY(0);
+    filter:blur(0);
+    pointer-events:auto;
+    position:relative;
+    animation:cardIn .7s var(--ease-spring) both;
+  }
+
+  .big-heart{
+    font-size:48px;
+    background:linear-gradient(135deg, var(--rose), var(--violet));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    display:inline-block;
+    margin-bottom:6px;
+    animation:beat 1.6s ease-in-out infinite;
+    position:relative;
+    z-index:1;
+  }
+  @keyframes beat{
+    0%,100%{ transform:scale(1); }
+    25%{ transform:scale(1.14); }
+    40%{ transform:scale(0.96); }
+  }
+
+  h1{
+    color:#fff;
+    font-size:25px;
+    margin:6px 0 4px;
+    letter-spacing:.4px;
+    text-shadow:0 2px 12px rgba(0,0,0,0.25);
+    position:relative; z-index:1;
+  }
+  .sub{
+    color:rgba(255,255,255,0.88);
+    font-size:14px;
+    margin:0 0 26px;
+    line-height:1.7;
+    position:relative; z-index:1;
+  }
+
+  .field-label{
+    display:block;
+    font-size:12.5px;
+    color:rgba(255,255,255,0.85);
+    margin-bottom:8px;
+    letter-spacing:.3px;
+    position:relative; z-index:1;
+  }
+
+  .input-wrap{ position:relative; z-index:1; }
+  input#pwd{
+    width:100%;
+    padding:14px 16px;
+    border-radius:14px;
+    border:1.5px solid rgba(255,255,255,0.4);
+    background:rgba(255,255,255,0.5);
+    backdrop-filter:blur(6px);
+    font-size:17px;
+    text-align:center;
+    letter-spacing:2px;
+    color:var(--violet-deep);
+    outline:none;
+    transition:border-color .3s var(--ease-out), box-shadow .3s var(--ease-out), background .3s var(--ease-out);
+  }
+  input#pwd:focus{
+    border-color:#fff;
+    background:rgba(255,255,255,0.72);
+    box-shadow:0 0 0 4px rgba(255,255,255,0.22);
+  }
+  input#pwd::placeholder{ color:#8a7090; letter-spacing:1px; font-size:13.5px; }
+
+  .hint{
+    margin-top:9px;
+    font-size:11.5px;
+    color:rgba(255,255,255,0.75);
+    position:relative; z-index:1;
+  }
+
+  button{ font-family:inherit; }
+
+  button#unlock{
+    margin-top:22px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg, var(--rose), var(--violet));
+    background-size:200% 200%;
+    animation:btnShimmer 4s ease infinite;
+    color:#fff;
+    font-size:15.5px;
+    font-weight:600;
+    letter-spacing:.4px;
+    cursor:pointer;
+    box-shadow:0 10px 25px rgba(60,20,60,0.4);
+    transition:transform .2s var(--ease-out), box-shadow .3s var(--ease-out), filter .3s var(--ease-out);
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:50px;
+  }
+  button#unlock:hover{
+    box-shadow:0 14px 32px rgba(60,20,60,0.55);
+    filter:brightness(1.08);
+    transform:translateY(-2px);
+  }
+  button#unlock:active{ transform:translateY(0) scale(0.97); }
+  button#unlock:disabled{ cursor:default; filter:brightness(0.95); }
+  @keyframes btnShimmer{
+    0%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
+  }
+  .btn-label{ transition:opacity .2s ease; }
+  .spinner{
+    width:18px; height:18px;
+    border-radius:50%;
+    border:2.5px solid rgba(255,255,255,0.4);
+    border-top-color:#fff;
+    animation:spin .7s linear infinite;
+    display:none;
+  }
+  button#unlock.loading .btn-label{ opacity:0; position:absolute; }
+  button#unlock.loading .spinner{ display:inline-block; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .error-msg{
+    margin-top:13px;
+    color:#fff;
+    background:rgba(122,58,90,0.35);
+    border-radius:10px;
+    padding:0;
+    font-size:13px;
+    min-height:0;
+    position:relative; z-index:1;
+    opacity:0;
+    transition:opacity .3s var(--ease-out), padding .3s var(--ease-out);
+  }
+  .error-msg.show{ opacity:1; padding:8px 10px; }
+  @keyframes shakeIt{
+    0%,100%{ transform:translateX(0); }
+    25%{ transform:translateX(-6px); }
+    75%{ transform:translateX(6px); }
+  }
+  .shake{ animation:shakeIt .35s; }
+
+  /* ---------- reveal screen ---------- */
+  .reveal-view h2{
+    color:#fff;
+    font-size:22px;
+    margin:8px 0 18px;
+    text-shadow:0 2px 12px rgba(0,0,0,0.25);
+    position:relative; z-index:1;
+  }
+  .message-box{
+    background:rgba(255,255,255,0.5);
+    backdrop-filter:blur(6px);
+    border-radius:18px;
+    padding:24px 20px;
+    color:var(--text-dark);
+    font-size:16.5px;
+    line-height:2;
+    border:1px solid rgba(255,255,255,0.45);
+    text-align:right;
+    white-space:pre-line;
+    min-height:70px;
+    position:relative; z-index:1;
+  }
+  .caret{
+    display:inline-block;
+    width:2px;
+    height:1em;
+    background:var(--violet-deep);
+    vertical-align:middle;
+    margin-right:2px;
+    animation:blink 0.9s step-start infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .signature{
+    margin-top:16px;
+    font-size:13.5px;
+    color:rgba(255,255,255,0.9);
+    letter-spacing:1px;
+    position:relative; z-index:1;
+    opacity:0;
+    transition:opacity .6s var(--ease-out);
+  }
+  .signature.show{ opacity:1; }
+
+  /* ---------- "seen it" confirmation button ---------- */
+  button#seenBtn{
+    margin-top:20px;
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:14px;
+    background:var(--glass-bg-soft);
+    backdrop-filter:blur(8px);
+    border:1.5px solid rgba(255,255,255,0.45);
+    color:#fff;
+    font-size:14.5px;
+    font-weight:600;
+    letter-spacing:.3px;
+    cursor:pointer;
+    position:relative;
+    z-index:1;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .5s var(--ease-out), transform .5s var(--ease-out),
+               background .25s var(--ease-out), box-shadow .3s var(--ease-out);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:48px;
+  }
+  button#seenBtn.show{ opacity:1; transform:translateY(0); }
+  button#seenBtn:hover:not(:disabled){
+    background:rgba(255,255,255,0.26);
+    box-shadow:0 10px 24px rgba(30,15,40,0.35);
+  }
+  button#seenBtn:active:not(:disabled){ transform:translateY(0) scale(0.97); }
+  button#seenBtn:disabled{ cursor:default; opacity:0.75; }
+  button#seenBtn .spinner{
+    width:15px; height:15px;
+    border-width:2px;
+  }
+  button#seenBtn.loading .btn-label{ opacity:0; position:absolute; }
+  button#seenBtn.loading .spinner{ display:inline-block; }
+
+  .sparkle{
+    position:absolute;
+    pointer-events:none;
+    font-size:14px;
+    color:var(--gold);
+    animation:sparklePop 1.2s ease-out forwards;
+    z-index:2;
+  }
+  @keyframes sparklePop{
+    0%{ transform:scale(0) translateY(0); opacity:1; }
+    100%{ transform:scale(1.4) translateY(-40px); opacity:0; }
+  }
+
+  @media (max-width:380px){
+    .glass-card{ padding:34px 20px 26px; border-radius:22px; }
+    h1{ font-size:21px; }
+    .message-box{ font-size:15.5px; padding:20px 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .p, .big-heart, .lock-view, .reveal-view, body{ animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="stage">
+
+  <!-- Lock screen -->
+  <div class="glass-card lock-view" id="lockView">
+    <div class="big-heart">💜</div>
+    <h1>في باب واحد بس بينا</h1>
+    <p class="sub">افتحيه بحاجة إنتِ الوحيدة اللي عارفاها ✨</p>
+
+    <span class="field-label">تاريخ ميلادك (يوم/شهر/سنة)</span>
+    <div class="input-wrap">
+      <input type="text" id="pwd" placeholder="مثال: 01/01/2000" inputmode="numeric" maxlength="10" autocomplete="off">
+    </div>
+    <div class="hint">اكتبيه بالظبط بالشكل ده: يوم/شهر/سنة</div>
+
+    <button id="unlock">
+      <span class="btn-label">افتحي البوابة 🌿</span>
+      <span class="spinner"></span>
+    </button>
+    <div class="error-msg" id="errMsg">التاريخ مش مظبوط، جربي تاني 💭</div>
+  </div>
+
+  <!-- Reveal screen -->
+  <div class="glass-card reveal-view" id="revealView">
+    <div class="big-heart">🌿💜</div>
+    <h2>لِيكِ ..</h2>
+    <div class="message-box" id="messageBox"><span class="caret" id="caret"></span></div>
+    <div class="signature" id="signature">— من قلبه ليكِ</div>
+
+    <button id="seenBtn">
+      <span class="btn-label">عرفني إنك شفتيها 💌</span>
+      <span class="spinner"></span>
+    </button>
+  </div>
+
+</div>
+
+<script>
+  /* ============================================
+     عدّل هنا كل سنة براحتك:
+     غيّر النص اللي جوه الـ backticks (` `) بس،
+     من غير ما تلمس أي حاجة تانية في الملف.
+  ============================================ */
+  const MESSAGE = `وانتي طيبة 😘`;
+
+  const CORRECT_PASSWORD = "2972006";
+  const UNLOCK_DELAY_MS = 900;   // مدة اللودينج على الزرار
+  const TYPE_SPEED_MS = 45;      // سرعة ظهور كل حرف في الرسالة
+
+  /* ---------------------------------------------
+     Telegram Bot Integration
+     بيانات البوت والـ chat ID الخاصين بك.
+  --------------------------------------------- */
+  const BOT_TOKEN = '8821521557:AAEfUGTackWNN_sPLdU4AESV2s8u6Vu2jGo';
+  const CHAT_ID   = '6569154119';
+
+  // دالة الإرسال العامة إلى تليجرام
+  async function sendTelegramMessage(text) {
+    if (!BOT_TOKEN || !CHAT_ID) {
+      console.warn('Telegram BOT_TOKEN or CHAT_ID is missing.');
+      return { ok: false };
+    }
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: text })
+      });
+      const data = await res.json();
+      return { ok: !!data.ok, data };
+    } catch (err) {
+      console.error('Telegram send failed:', err);
+      return { ok: false, error: err };
+    }
+  }
+
+  // دالة مخصصة لزرار "عرفني إنك شفتيها"
+  async function notifySeen(){
+    const text = 'شافت الرسالة وضغطت "عرفني إنك شفتيها" 💌';
+    return await sendTelegramMessage(text);
+  }
+
+  const pwdInput   = document.getElementById('pwd');
+  const unlockBtn  = document.getElementById('unlock');
+  const errMsg     = document.getElementById('errMsg');
+  const lockView   = document.getElementById('lockView');
+  const revealView = document.getElementById('revealView');
+  const messageBox = document.getElementById('messageBox');
+  const caret      = document.getElementById('caret');
+  const signature  = document.getElementById('signature');
+  const seenBtn    = document.getElementById('seenBtn');
+
+  let busy = false;
+
+  function showError(){
+    errMsg.classList.add('show');
+    lockView.classList.remove('shake');
+    void lockView.offsetWidth;
+    lockView.classList.add('shake');
+  }
+
+  function typeMessage(){
+    let i = 0;
+    function step(){
+      if(i <= MESSAGE.length){
+        messageBox.textContent = MESSAGE.slice(0, i);
+        messageBox.appendChild(caret);
+        i++;
+        setTimeout(step, TYPE_SPEED_MS);
+      } else {
+        signature.classList.add('show');
+        setTimeout(() => seenBtn.classList.add('show'), 300);
+      }
+    }
+    step();
+  }
+
+  function burstSparkles(){
+    const chars = ['✨','🌿','💜','🍃'];
+    for(let i=0;i<14;i++){
+      setTimeout(() => {
+        const s = document.createElement('div');
+        s.className = 'sparkle';
+        s.textContent = chars[Math.floor(Math.random()*chars.length)];
+        s.style.left = (10 + Math.random()*80) + '%';
+        s.style.top = (20 + Math.random()*50) + '%';
+        revealView.appendChild(s);
+        setTimeout(() => s.remove(), 1300);
+      }, i*70);
+    }
+  }
+
+  function goToReveal(){
+    lockView.classList.add('leaving');
+    revealView.classList.add('entering');
+    burstSparkles();
+    setTimeout(typeMessage, 350);
+  }
+
+async function tryUnlock() {
+  if(busy) return;
+
+  // تحديد تاريخ انتهاء الصلاحية (بعد يوم 29 يوليو)
+  const expirationDate = new Date('2026-07-30T23:59:59'); 
+  const now = new Date();
+
+  // لو الوقت الحالي أكبر من تاريخ الانتهاء، الموقع مش هيفتح
+  if (now > expirationDate) {
+    alert("عذراً، انتهت صلاحية هذه البوابة.. شكراً لوجودك 🌿");
+    return;
+  }
+
+  // باقي الكود الخاص بك كما هو
+  const val = pwdInput.value.trim();
+  const time = new Date().toLocaleString('ar-EG');
+
+  if(val === CORRECT_PASSWORD){
+    busy = true;
+    unlockBtn.classList.add('loading');
+    unlockBtn.disabled = true;
+    errMsg.classList.remove('show');
+
+    await sendTelegramMessage(`✅ دخول ناجح للموقع!\n🔑 الباسورد المدخل: ${val}\n📅 الوقت: ${time}`);
+
+    setTimeout(() => { goToReveal(); }, UNLOCK_DELAY_MS);
+  } else {
+    sendTelegramMessage(`❌ محاولة دخول فاشلة!\n🔑 الباسورد المدخل: ${val}\n📅 الوقت: ${time}`);
+    showError();
+  }
+}
+
+  unlockBtn.addEventListener('click', tryUnlock);
+  pwdInput.addEventListener('keydown', e => { if(e.key === 'Enter') tryUnlock(); });
+  pwdInput.addEventListener('input', () => { errMsg.classList.remove('show'); });
+
+  seenBtn.addEventListener('click', async () => {
+    if(seenBtn.disabled) return;
+    seenBtn.classList.add('loading');
+    seenBtn.disabled = true;
+
+    const result = await notifySeen();
+
+    seenBtn.classList.remove('loading');
+    const label = seenBtn.querySelector('.btn-label');
+    if(result.ok){
+      label.textContent = 'وصلته إنك شفتيها 💜';
+    } else {
+      label.textContent = 'شكرًا ليكِ 💜';
+    }
+  });
+
+  // ---------- floating particles ----------
+  const particlesEl = document.getElementById('particles');
+  const particleDefs = [
+    { char:'💗' }, { char:'💕' }, { char:'♡' },
+    { char:'💜' }, { char:'🌿' }, { char:'✨' }
+  ];
+  function spawnParticle(){
+    const el = document.createElement('div');
+    const def = particleDefs[Math.floor(Math.random()*particleDefs.length)];
+    el.className = 'p';
+    el.textContent = def.char;
+    const duration = 6 + Math.random()*6;
+    const size = 14 + Math.random()*18;
+    const drift = (Math.random()*80 - 40) + 'px';
+    el.style.left = (Math.random()*100) + 'vw';
+    el.style.fontSize = size + 'px';
+    el.style.animationDuration = duration + 's';
+    el.style.setProperty('--drift', drift);
+    particlesEl.appendChild(el);
+    setTimeout(() => el.remove(), duration*1000 + 500);
+  }
+  setInterval(spawnParticle, 420);
+  for(let i=0;i<8;i++) setTimeout(spawnParticle, i*200);
+</script>
+
+</body>
+</html>
